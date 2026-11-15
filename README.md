@@ -33,7 +33,7 @@ gnome-extensions enable vibrance@wowluka2.github.io
 Click the icon in the top panel and drag the slider (0–100%, where 100% = 2× saturation).
 The value is remembered between sessions. **Reset** returns to the original colors.
 A range of 20–40% usually looks best; higher values clip already saturated colors.
-
+[Image Alt]([image_url](https://github.com/wowluka2/vibrance-gnome/blob/7c290cc82ce01c8dca303f12965992f1190d37d0/screenshot.png))
 ## Updating
 
 ```sh
