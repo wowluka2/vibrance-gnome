@@ -34,6 +34,8 @@ Kliknij ikonę w górnym panelu i przesuń suwak (0–100%, gdzie 100% = 2× sat
 Wartość jest zapamiętywana między sesjami. **Reset** przywraca oryginalne kolory.
 Najlepiej wygląda zwykle 20–40%; wyższe wartości przycinają już nasycone kolory.
 
+![Image Alt](https://github.com/wowluka2/vibrance-gnome/blob/7c290cc82ce01c8dca303f12965992f1190d37d0/screenshot.png)
+
 ## Aktualizacja
 
 ```sh
