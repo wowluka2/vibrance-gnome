@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.vibrance" path="/org/gnome/shell/extensions/vibrance/">
+    <key name="percent" type="i">
+      <default>0</default>
+      <range min="0" max="100"/>
+      <summary>Saturation boost in percent (100 = 2x saturation)</summary>
+    </key>
+  </schema>
+</schemalist>
