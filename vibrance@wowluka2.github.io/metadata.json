@@ -1,10 +1,12 @@
 {
   "uuid": "vibrance@wowluka2.github.io",
   "name": "Vibrance",
-  "description": "Screen saturation (digital vibrance) slider for GNOME Shell on Wayland. Works on any GPU.",
-  "shell-version": ["51"],
+  "description": "Per-display screen saturation (digital vibrance) sliders for GNOME Shell on Wayland. Works on any GPU.",
+  "shell-version": [
+    "51"
+  ],
   "settings-schema": "org.gnome.shell.extensions.vibrance",
   "url": "https://github.com/wowluka2/vibrance-gnome",
-  "version": 1,
-  "version-name": "1.0.0"
+  "version": 2,
+  "version-name": "1.1.0"
 }

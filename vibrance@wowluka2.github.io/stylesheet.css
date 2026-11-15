@@ -1,0 +1,34 @@
+.vibrance-row {
+    padding: 4px 8px;
+}
+
+.vibrance-card {
+    spacing: 10px;
+    min-width: 300px;
+    padding: 10px 14px 12px 14px;
+    border-radius: 14px;
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.vibrance-header {
+    spacing: 10px;
+}
+
+.vibrance-icon {
+    icon-size: 22px;
+}
+
+.vibrance-title {
+    font-weight: bold;
+}
+
+.vibrance-subtitle {
+    font-size: 0.85em;
+    color: #9a9996;
+}
+
+.vibrance-value {
+    font-weight: bold;
+    min-width: 3.4em;
+    text-align: right;
+}
