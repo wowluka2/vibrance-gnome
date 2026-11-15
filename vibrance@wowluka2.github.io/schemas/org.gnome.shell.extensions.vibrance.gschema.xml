@@ -11,5 +11,10 @@
       <summary>Link displays</summary>
       <description>When true, all displays share one saturation value.</description>
     </key>
+    <key name="fullscreen" type="b">
+      <default>true</default>
+      <summary>Apply in fullscreen</summary>
+      <description>Keep the compositor in the loop for fullscreen windows (disables direct scanout) so the effect also covers fullscreen video and games.</description>
+    </key>
   </schema>
 </schemalist>

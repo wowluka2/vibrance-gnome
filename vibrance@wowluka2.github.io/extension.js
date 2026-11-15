@@ -149,7 +149,7 @@ class VibranceIndicator extends PanelMenu.Button {
         }));
     }
 
-    build(monitors, primaryIndex, percents, linked) {
+    build(monitors, primaryIndex, percents, linked, fullscreen) {
         this.menu.removeAll();
         this._rows = [];
         const multi = monitors.length > 1;
@@ -172,6 +172,10 @@ class VibranceIndicator extends PanelMenu.Button {
             this.menu.addMenuItem(link);
         }
 
+        const fs = new PopupMenu.PopupSwitchMenuItem('Apply in fullscreen', fullscreen);
+        fs.connect('toggled', (_item, state) => this._handlers.onFullscreen(state));
+        this.menu.addMenuItem(fs);
+
         const reset = new PopupMenu.PopupMenuItem('Reset all');
         reset.connect('activate', () => this._handlers.onReset());
         this.menu.addMenuItem(reset);
@@ -193,11 +197,14 @@ export default class VibranceExtension extends Extension {
         this._dirty = false;
         this._percents = this._loadPercents();
         this._linked = this._settings.get_boolean('linked');
+        this._fullscreen = this._settings.get_boolean('fullscreen');
+        this._inhibited = false;
 
         this._indicator = new VibranceIndicator({
             onChange: (i, pct) => this._onChange(i, pct),
             onLink: on => this._onLink(on),
             onReset: () => this._onReset(),
+            onFullscreen: on => this._onFullscreen(on),
         });
         Main.panel.addToStatusArea(this.uuid, this._indicator);
 
@@ -283,9 +290,15 @@ export default class VibranceExtension extends Extension {
         this._scheduleSave();
     }
 
+    _onFullscreen(on) {
+        this._fullscreen = on;
+        this._settings.set_boolean('fullscreen', on);
+        this._updateInhibit();
+    }
+
     _refresh() {
         this._indicator.build(this._monitors(), Main.layoutManager.primaryIndex,
-            this._percents, this._linked);
+            this._percents, this._linked, this._fullscreen);
         this._applyAll();
     }
 
@@ -313,6 +326,32 @@ export default class VibranceExtension extends Extension {
             effect.configure(1 + pct / 100, monitor,
                 global.stage.width, global.stage.height);
         });
+
+        this._updateInhibit();
+    }
+
+    // A fullscreen window is normally scanned out directly (the compositor is
+    // bypassed), so the shader would never run on it. While at least one
+    // effect is active we inhibit that. The inhibition is a reference counter
+    // inside Mutter, so every disable_unredirect() must be paired with exactly
+    // one enable_unredirect(); the _inhibited flag guarantees that.
+    _updateInhibit() {
+        const want = this._fullscreen && this._effects.size > 0;
+        if (want === this._inhibited)
+            return;
+
+        const compositor = global.compositor;
+        if (want) {
+            if (typeof compositor?.disable_unredirect !== 'function') {
+                console.warn('vibrance: disable_unredirect() unavailable, fullscreen will not be affected');
+                return;
+            }
+            compositor.disable_unredirect();
+            this._inhibited = true;
+        } else {
+            compositor.enable_unredirect();
+            this._inhibited = false;
+        }
     }
 
     disable() {
@@ -328,6 +367,7 @@ export default class VibranceExtension extends Extension {
         for (const effect of this._effects.values())
             Main.uiGroup.remove_effect(effect);
         this._effects.clear();
+        this._updateInhibit();
         this._indicator?.destroy();
         this._indicator = null;
         this._settings = null;
